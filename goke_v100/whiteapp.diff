@@ -1,0 +1,26 @@
+diff --git a/base/services/core/java/com/android/server/wm/RecentTasks.java b/base/services/core/java/com/android/server/wm/RecentTasks.java
+index 455f568d7..6dae3ee82 100644
+--- a/base/services/core/java/com/android/server/wm/RecentTasks.java
++++ b/base/services/core/java/com/android/server/wm/RecentTasks.java
+@@ -675,16 +675,20 @@ class RecentTasks {
+                     task.getBaseIntent().getComponent().getPackageName();
+             if (task.mUserId != userId) continue;
+             if (!taskPackageName.equals(packageName)) continue;
+-
+             mSupervisor.removeTask(task, true, REMOVE_FROM_RECENTS, "remove-package-task");
+         }
+     }
+ 
++       String WhiteApp = "com.kjd.screenrecordlibrary";
++       
+     void removeAllVisibleTasks(int userId) {
+         Set<Integer> profileIds = getProfileIds(userId);
+         for (int i = mTasks.size() - 1; i >= 0; --i) {
+             final Task task = mTasks.get(i);
+             if (!profileIds.contains(task.mUserId)) continue;
++                       if(WhiteApp.equals(task.getBaseIntent().getComponent().getPackageName())) {
++                               remove(task);
++                       }
+             if (isVisibleRecentTask(task)) {
+                 mTasks.remove(i);
+                 notifyTaskRemoved(task, true /* wasTrimmed */, true /* killProcess */);
