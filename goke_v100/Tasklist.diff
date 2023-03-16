@@ -1,0 +1,34 @@
+    将录屏移除近期任务列表
+
+diff --git a/apps/Launcher3/quickstep/src/com/android/quickstep/RecentTasksList.java b/apps/Launcher3/quickstep/src/com/android/quickstep/RecentTasksList.java
+index 3080f040a..0788fd9a5 100644
+--- a/apps/Launcher3/quickstep/src/com/android/quickstep/RecentTasksList.java
++++ b/apps/Launcher3/quickstep/src/com/android/quickstep/RecentTasksList.java
+@@ -196,6 +196,10 @@ public class RecentTasksList extends TaskStackChangeListener {
+             }
+         };
+ 
++               List<String> whiteApp = new ArrayList<>();
++        whiteApp.add("com.kjd.screenrecordlibrary");
++               String white_App = "com.kjd.screenrecordlibrary";
++               
+         TaskLoadResult allTasks = new TaskLoadResult(requestId, loadKeysOnly, rawTasks.size());
+         for (ActivityManager.RecentTaskInfo rawTask : rawTasks) {
+             Task.TaskKey taskKey = new Task.TaskKey(rawTask);
+@@ -206,7 +210,17 @@ public class RecentTasksList extends TaskStackChangeListener {
+             } else {
+                 task = new Task(taskKey);
+             }
++                       
++                       for (String s : whiteApp) {
++                               if (s.equals(rawTask.realActivity.getPackageName())) {
++                                       allTasks.remove(task);
++                                       
++                                       break;
++                               }
++                       }
++                       
+             task.setLastSnapshotData(rawTask);
++                       if (!white_App.equals(rawTask.realActivity.getPackageName()))
+             allTasks.add(task);
+         }
